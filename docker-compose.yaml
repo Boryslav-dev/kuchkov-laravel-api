@@ -36,10 +36,10 @@ services:
     networks:
       - code-network
     environment:
-      MYSQL_ROOT_PASSWORD: lrv7
-      MYSQL_PASSWORD: lrv7
-      MYSQL_DATABASE: lrv7
-      MYSQL_USER: lrv7
+      MYSQL_ROOT_PASSWORD: 261200
+      MYSQL_PASSWORD: smf5
+      MYSQL_DATABASE: smf5
+      MYSQL_USER: smf5
 
 networks:
   code-network:
