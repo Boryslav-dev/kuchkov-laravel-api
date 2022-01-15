@@ -1,25 +1,16 @@
 require('./bootstrap');
 require('../css/style.css');
-import VueRouter from 'vue-router'
-import MainComponent from "./components/MainComponent.vue";
-import Temperature from "./components/Cards/Temperature.vue";
-import Humidity from "./components/Cards/Humidity.vue";
-import FireSafety from "./components/Cards/FireSafety.vue";
+require('vue-moment');
+require('vue-router');
 window.Vue = require('vue');
 
-Vue.use(require('vue-moment'));
-Vue.use(VueRouter)
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-const router = new VueRouter({
-    routes: [
-        { path: '/home', component: MainComponent},
-        { path: '/temperature', component: Temperature},
-        { path: '/humidity', component: Humidity},
-        { path: '/security', component: FireSafety},
-    ]
-})
+Vue.component('main-component', require('./components/MainComponent.vue').default);
+Vue.use(require('vue-moment'));
+Vue.use(require('vue-router'))
 
 const app = new Vue({
     el: '#app',
-    router
 });
