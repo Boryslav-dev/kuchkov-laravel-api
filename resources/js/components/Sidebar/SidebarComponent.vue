@@ -27,7 +27,7 @@
                             <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 0 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm.247-6.998a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973zM8.5 2a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 2z"/>
                         </svg>
                     </p>
-                    <p v-else-if="apiWeatherMain === 'Cloud'">
+                    <p v-else-if="apiWeatherMain === 'Clouds'">
                         {{ apiWeatherDescription }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-clouds" viewBox="0 0 16 16">
                             <path d="M16 7.5a2.5 2.5 0 0 1-1.456 2.272 3.513 3.513 0 0 0-.65-.824 1.5 1.5 0 0 0-.789-2.896.5.5 0 0 1-.627-.421 3 3 0 0 0-5.22-1.625 5.587 5.587 0 0 0-1.276.088 4.002 4.002 0 0 1 7.392.91A2.5 2.5 0 0 1 16 7.5z"/>
@@ -92,7 +92,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-wind" viewBox="0 0 16 16">
                             <path d="M12.5 2A2.5 2.5 0 0 0 10 4.5a.5.5 0 0 1-1 0A3.5 3.5 0 1 1 12.5 8H.5a.5.5 0 0 1 0-1h12a2.5 2.5 0 0 0 0-5zm-7 1a1 1 0 0 0-1 1 .5.5 0 0 1-1 0 2 2 0 1 1 2 2h-5a.5.5 0 0 1 0-1h5a1 1 0 0 0 0-2zM0 9.5A.5.5 0 0 1 .5 9h10.042a3 3 0 1 1-3 3 .5.5 0 0 1 1 0 2 2 0 1 0 2-2H.5a.5.5 0 0 1-.5-.5z"/>
                         </svg>
-                        {{ apiWindSpeed }}
+                        {{ apiWindSpeed }} m/sec
                     </p>
                 </div>
                 <div class="col text-xl-center h4">
@@ -143,7 +143,7 @@ export default {
     name: "SidebarComponent",
     components: {TimeSince},
     props: {
-        weatherApiResponseArray: Array,
+        weatherApiResponseObject: Object,
     },
     data() {
         return {
@@ -154,31 +154,31 @@ export default {
     },
     computed: {
         apiTemperature() {
-            return '26';
+            return parseInt(this.weatherApiResponseObject.main.temp)-273;
         },
         apiTemperatureFeels() {
-            return '21';
+            return parseInt(this.weatherApiResponseObject.main.feels_like)-273;
         },
         apiTemperatureMax() {
-            return '24';
+            return parseInt(this.weatherApiResponseObject.main.temp_max)-273;
         },
         apiTemperatureMin() {
-            return '18';
+            return parseInt(this.weatherApiResponseObject.main.temp_min)-273;
         },
         apiHumidity() {
-            return '50';
+            return this.weatherApiResponseObject.main.humidity;
         },
         apiPressure() {
-            return '1023';
+            return this.weatherApiResponseObject.main.pressure;
         },
         apiWindSpeed() {
-            return '1023';
+            return this.weatherApiResponseObject.wind.speed;
         },
         apiWeatherMain() {
-            return 'Clear';
+            return this.weatherApiResponseObject.weather[0].main;
         },
         apiWeatherDescription() {
-            return 'Clear sky';
+            return this.weatherApiResponseObject.weather[0].description[0].toUpperCase() + this.weatherApiResponseObject.weather[0].description.slice(1);
         },
     },
 }
