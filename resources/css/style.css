@@ -30,8 +30,8 @@
 }
 
 .hovereffectLight img {
-    filter: brightness(1.2) !important;
-    -webkit-filter: brightness(1.2) !important;
+    filter: brightness(1.5) !important;
+    -webkit-filter: brightness(1.5) !important;
     display: block;
     position: relative;
     -webkit-transition: all 0.4s ease-in;
@@ -39,8 +39,8 @@
 }
 
 .hovereffectLight:hover img {
-    filter: brightness(1.2) grayscale(1) blur(3px) !important;
-    -webkit-filter: brightness(1.2) grayscale(1) blur(3px) !important;
+    filter: brightness(1.5) grayscale(1) blur(3px) !important;
+    -webkit-filter: brightness(1.5) grayscale(1) blur(3px) !important;
     -webkit-transform: scale(1.2);
     -ms-transform: scale(1.2);
     transform: scale(1.2);
@@ -156,4 +156,8 @@ body {
 
 .nav-link:hover .fa {
     transform: rotate(360deg)
+}
+
+.sidebar {
+    margin-left: -1%;
 }
