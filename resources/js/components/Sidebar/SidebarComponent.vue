@@ -1,13 +1,19 @@
 <template>
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-primary h-100">
+        <div>
+            <time-since :date="new Date(2021, 11, 11)"></time-since>
+            <p class="text-xl-center h2 mb-5">
+                <span>{{ new Date() | moment("dddd, MMMM Do YYYY") }}</span>
+            </p>
+        </div>
         <div class="container">
-            <div class="row align-items-center mb-3">
+            <div class="row align-items-center my-3">
                 <div class="col">
                     <p class="text-xl-center h2">Weather in Kharkiv:</p>
                 </div>
             </div>
             <div class="row align-items-center mb-3">
-                <div class="col text-xl-center h4">
+                <div class="col text-xl-center h3">
                     <p v-if="apiWeatherMain === 'Clear'">
                         {{ apiWeatherDescription }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-cloud-sun" viewBox="0 0 16 16">
@@ -100,28 +106,28 @@
                 </div>
             </div>
             <div class="row align-items-center">
-                <div class="col text-xl-start">
+                <div class="col text-xl-start h6">
                     <p>
                         Current Temperature: {{ apiTemperature }}&#176;C
                     </p>
                 </div>
             </div>
             <div class="row align-items-center">
-                <div class="col text-xl-start">
+                <div class="col text-xl-start h6">
                     <p>
                         Temperature feels like: {{ apiTemperatureFeels }}&#176;C
                     </p>
                 </div>
             </div>
             <div class="row align-items-center">
-                <div class="col text-xl-start">
+                <div class="col text-xl-start h6">
                     <p>
                         Max Temperature: {{ apiTemperatureMax }}&#176;C
                     </p>
                 </div>
             </div>
             <div class="row align-items-center">
-                <div class="col text-xl-start">
+                <div class="col text-xl-start h6">
                     <p>
                         Min Temperature: {{ apiTemperatureMin }}&#176;C
                     </p>
@@ -132,8 +138,10 @@
 </template>
 
 <script>
+import TimeSince from "../Time/TimeSince";
 export default {
-    name: "RightSidebarComponent",
+    name: "SidebarComponent",
+    components: {TimeSince},
     props: {
         weatherApiResponseArray: Array,
     },
@@ -141,6 +149,7 @@ export default {
         return {
             sensorTemperatureValue: '21',
             sensorHumidityValue: '60',
+            date: new Date(),
         };
     },
     computed: {
