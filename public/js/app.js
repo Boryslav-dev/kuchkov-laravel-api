@@ -1920,8 +1920,23 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Sidebar/SidebarCardComponent */ "./resources/js/components/Sidebar/SidebarCardComponent.vue");
-/* harmony import */ var _Chart_FireSafetyChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Chart/FireSafetyChart */ "./resources/js/components/Chart/FireSafetyChart.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Sidebar/SidebarCardComponent */ "./resources/js/components/Sidebar/SidebarCardComponent.vue");
+/* harmony import */ var _Chart_FireSafetyChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Chart/FireSafetyChart */ "./resources/js/components/Chart/FireSafetyChart.vue");
+/* harmony import */ var _Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Constants/serverValues */ "./resources/js/components/Constants/serverValues.js");
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -1933,15 +1948,136 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FireSafety",
   components: {
-    FireSafetyChart: _Chart_FireSafetyChart__WEBPACK_IMPORTED_MODULE_1__["default"],
-    SidebarCardComponent: _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+    FireSafetyChart: _Chart_FireSafetyChart__WEBPACK_IMPORTED_MODULE_2__["default"],
+    SidebarCardComponent: _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      loadedFlame: false,
+      loadedSmoke: false,
+      chartdataSmoke: [],
+      chartdataFlame: []
+    };
+  },
+  created: function created() {
+    this.fetchSmoke();
+    this.fetchFlame();
   },
   methods: {
+    fetchSmoke: function fetchSmoke() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response, smokeApiResponseObject, params, _iterator, _step;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fetch("".concat(_Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__["BASE_API_URL"], "/api/getSensorsValueForDay/smoke"));
+
+              case 3:
+                response = _context.sent;
+                _context.next = 6;
+                return response.json();
+
+              case 6:
+                smokeApiResponseObject = _context.sent;
+                _iterator = _createForOfIteratorHelper(smokeApiResponseObject);
+
+                try {
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    params = _step.value;
+
+                    _this.chartdataSmoke.push(params.value);
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+
+                _this.loadedSmoke = true;
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](0);
+                console.error("Fetching error");
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 12]]);
+      }))();
+    },
+    fetchFlame: function fetchFlame() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response, smokeApiResponseObject, params, _iterator2, _step2;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return fetch("".concat(_Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__["BASE_API_URL"], "/api/getSensorsValueForDay/flame"));
+
+              case 3:
+                response = _context2.sent;
+                _context2.next = 6;
+                return response.json();
+
+              case 6:
+                smokeApiResponseObject = _context2.sent;
+                _iterator2 = _createForOfIteratorHelper(smokeApiResponseObject);
+
+                try {
+                  for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                    params = _step2.value;
+
+                    _this2.chartdataFlame.push(params.value);
+                  }
+                } catch (err) {
+                  _iterator2.e(err);
+                } finally {
+                  _iterator2.f();
+                }
+
+                _this2.loadedFlame = true;
+                _context2.next = 15;
+                break;
+
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](0);
+                console.error("Fetching error");
+
+              case 15:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 12]]);
+      }))();
+    },
     goBack: function goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/home');
     }
@@ -1959,8 +2095,23 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Chart_HumidityChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Chart/HumidityChart */ "./resources/js/components/Chart/HumidityChart.vue");
-/* harmony import */ var _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Sidebar/SidebarCardComponent */ "./resources/js/components/Sidebar/SidebarCardComponent.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Chart_HumidityChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Chart/HumidityChart */ "./resources/js/components/Chart/HumidityChart.vue");
+/* harmony import */ var _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Sidebar/SidebarCardComponent */ "./resources/js/components/Sidebar/SidebarCardComponent.vue");
+/* harmony import */ var _Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Constants/serverValues */ "./resources/js/components/Constants/serverValues.js");
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -1972,15 +2123,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Humidity",
   components: {
-    SidebarCardComponent: _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
-    HumidityChart: _Chart_HumidityChart__WEBPACK_IMPORTED_MODULE_0__["default"]
+    SidebarCardComponent: _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    HumidityChart: _Chart_HumidityChart__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      loaded: false,
+      chartdata: []
+    };
+  },
+  created: function created() {
+    this.fetchHumidity();
   },
   methods: {
+    fetchHumidity: function fetchHumidity() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response, humidityApiResponseObject, params, _iterator, _step;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fetch("".concat(_Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__["BASE_API_URL"], "/api/getSensorsValueForDay/humidity"));
+
+              case 3:
+                response = _context.sent;
+                _context.next = 6;
+                return response.json();
+
+              case 6:
+                humidityApiResponseObject = _context.sent;
+                _iterator = _createForOfIteratorHelper(humidityApiResponseObject);
+
+                try {
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    params = _step.value;
+
+                    _this.chartdata.push(params.value);
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+
+                _this.loaded = true;
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](0);
+                console.error("Fetching error");
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 12]]);
+      }))();
+    },
     goBack: function goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/home');
     }
@@ -1998,8 +2214,23 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Chart_TemperatureChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Chart/TemperatureChart */ "./resources/js/components/Chart/TemperatureChart.vue");
-/* harmony import */ var _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Sidebar/SidebarCardComponent */ "./resources/js/components/Sidebar/SidebarCardComponent.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Chart_TemperatureChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Chart/TemperatureChart */ "./resources/js/components/Chart/TemperatureChart.vue");
+/* harmony import */ var _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Sidebar/SidebarCardComponent */ "./resources/js/components/Sidebar/SidebarCardComponent.vue");
+/* harmony import */ var _Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Constants/serverValues */ "./resources/js/components/Constants/serverValues.js");
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2011,15 +2242,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Temperature",
   components: {
-    SidebarCardComponent: _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
-    TemperatureChart: _Chart_TemperatureChart__WEBPACK_IMPORTED_MODULE_0__["default"]
+    SidebarCardComponent: _Sidebar_SidebarCardComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    TemperatureChart: _Chart_TemperatureChart__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      loaded: false,
+      chartdata: []
+    };
+  },
+  created: function created() {
+    this.fetchTemperature();
   },
   methods: {
+    fetchTemperature: function fetchTemperature() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response, temperatureApiResponseObject, params, _iterator, _step;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fetch("".concat(_Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__["BASE_API_URL"], "/api/getSensorsValueForDay/temperature"));
+
+              case 3:
+                response = _context.sent;
+                _context.next = 6;
+                return response.json();
+
+              case 6:
+                temperatureApiResponseObject = _context.sent;
+                _iterator = _createForOfIteratorHelper(temperatureApiResponseObject);
+
+                try {
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    params = _step.value;
+
+                    _this.chartdata.push(params.value);
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+
+                _this.loaded = true;
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](0);
+                console.error("Fetching error");
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 12]]);
+      }))();
+    },
     goBack: function goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/home');
     }
@@ -2046,11 +2342,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FireSafetyChart",
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
+  props: {
+    chartdataSmoke: {
+      type: Object,
+      "default": null
+    },
+    chartdataFlame: {
+      type: Object,
+      "default": null
+    },
+    options: {
+      type: Object,
+      "default": null
+    }
+  },
   data: function data() {
     return {
-      dataParams: [],
-      valueFireParams: [],
-      valueSmokeParams: []
+      dataParams: []
     };
   },
   created: function created() {
@@ -2061,27 +2369,17 @@ __webpack_require__.r(__webpack_exports__);
         this.dataParams.push(i + ':00');
       }
     }
-
-    for (var _i = 0; _i <= 24; _i++) {
-      var j = _i;
-      this.valueFireParams.push(_i ^ 2 * j ^ 2 * 12 - (j ^ j + _i));
-    }
-
-    for (var _i2 = 0; _i2 <= 24; _i2++) {
-      var _j = _i2;
-      this.valueSmokeParams.push(_i2 ^ 2 * _j ^ 2 * 4 - (_j ^ _j + _i2));
-    }
   },
   mounted: function mounted() {
     this.renderChart({
       labels: this.dataParams,
       datasets: [{
         label: 'Smoke',
-        data: this.valueSmokeParams
+        data: this.chartdataSmoke
       }, {
         label: 'Fire',
         backgroundColor: 'rgba(255,0,0,0.7)',
-        data: this.valueFireParams
+        data: this.chartdataFlame
       }]
     }, {
       responsive: true,
@@ -2110,10 +2408,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "HumidityChart",
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
+  props: {
+    chartdata: {
+      type: Object,
+      "default": null
+    },
+    options: {
+      type: Object,
+      "default": null
+    }
+  },
   data: function data() {
     return {
-      dataParams: [],
-      valueHumidityParams: []
+      dataParams: []
     };
   },
   created: function created() {
@@ -2124,11 +2431,6 @@ __webpack_require__.r(__webpack_exports__);
         this.dataParams.push(i + ':00');
       }
     }
-
-    for (var _i = 0; _i <= 24; _i++) {
-      var j = _i;
-      this.valueHumidityParams.push(_i ^ 2 * j ^ 2 * 12 - (j ^ j + _i));
-    }
   },
   mounted: function mounted() {
     this.renderChart({
@@ -2136,7 +2438,7 @@ __webpack_require__.r(__webpack_exports__);
       datasets: [{
         label: 'Humidity',
         backgroundColor: 'rgba(19,12,92,0.7)',
-        data: this.valueHumidityParams
+        data: this.chartdata
       }]
     }, {
       responsive: true,
@@ -2165,10 +2467,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TemperatureChart",
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
+  props: {
+    chartdata: {
+      type: Object,
+      "default": null
+    },
+    options: {
+      type: Object,
+      "default": null
+    }
+  },
   data: function data() {
     return {
-      dataParams: [],
-      valueTemperatureParams: []
+      dataParams: []
     };
   },
   created: function created() {
@@ -2179,11 +2490,6 @@ __webpack_require__.r(__webpack_exports__);
         this.dataParams.push(i + ':00');
       }
     }
-
-    for (var _i = 0; _i <= 24; _i++) {
-      var j = _i;
-      this.valueTemperatureParams.push(_i ^ 2 * j ^ 2 * 12 - (j ^ j + _i));
-    }
   },
   mounted: function mounted() {
     this.renderChart({
@@ -2191,7 +2497,7 @@ __webpack_require__.r(__webpack_exports__);
       datasets: [{
         label: 'Temperature',
         backgroundColor: 'rgba(178, 34, 34, 0.7)',
-        data: this.valueTemperatureParams
+        data: this.chartdata
       }]
     }, {
       responsive: true,
@@ -2216,6 +2522,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Sidebar_SidebarComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sidebar/SidebarComponent */ "./resources/js/components/Sidebar/SidebarComponent.vue");
 /* harmony import */ var _MonitorComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MonitorComponent */ "./resources/js/components/MonitorComponent.vue");
 /* harmony import */ var _Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Constants/serverValues */ "./resources/js/components/Constants/serverValues.js");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2302,6 +2614,57 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee, null, [[0, 9]]);
+      }))();
+    },
+    fetchHumidity: function fetchHumidity() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response, humidityApiResponseObject, params, _iterator, _step;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return fetch("".concat(_Constants_serverValues__WEBPACK_IMPORTED_MODULE_3__["BASE_API_URL"], "/api/getSensorsValueForDay/humidity"));
+
+              case 3:
+                response = _context2.sent;
+                _context2.next = 6;
+                return response.json();
+
+              case 6:
+                humidityApiResponseObject = _context2.sent;
+                _iterator = _createForOfIteratorHelper(humidityApiResponseObject);
+
+                try {
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    params = _step.value;
+
+                    _this2.valueHumidityParams.push(params.value);
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+
+                _context2.next = 14;
+                break;
+
+              case 11:
+                _context2.prev = 11;
+                _context2.t0 = _context2["catch"](0);
+                console.error("Fetching error");
+
+              case 14:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 11]]);
       }))();
     }
   }
@@ -77335,7 +77698,16 @@ var render = function () {
     _c(
       "div",
       { staticClass: "col-9 col-md-9 col-lg-9 col-sm-12" },
-      [_c("fire-safety-chart")],
+      [
+        _vm.loadedFlame && _vm.loadedSmoke
+          ? _c("fire-safety-chart", {
+              attrs: {
+                chartdataSmoke: _vm.chartdataSmoke,
+                chartdataFlame: _vm.chartdataFlame,
+              },
+            })
+          : _vm._e(),
+      ],
       1
     ),
   ])
@@ -77373,7 +77745,11 @@ var render = function () {
     _c(
       "div",
       { staticClass: "col-9 col-md-9 col-lg-9 col-sm-12" },
-      [_c("humidity-chart")],
+      [
+        _vm.loaded
+          ? _c("humidity-chart", { attrs: { chartdata: _vm.chartdata } })
+          : _vm._e(),
+      ],
       1
     ),
   ])
@@ -77411,7 +77787,11 @@ var render = function () {
     _c(
       "div",
       { staticClass: "col-9 col-md-9 col-lg-9 col-sm-12" },
-      [_c("temperature-chart")],
+      [
+        _vm.loaded
+          ? _c("temperature-chart", { attrs: { chartdata: _vm.chartdata } })
+          : _vm._e(),
+      ],
       1
     ),
   ])
