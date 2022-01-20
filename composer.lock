@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ddcec845a51e37a9dd94ffc2ddaee2b7",
+    "content-hash": "1813d3e44d0f73bfde6ced9cea0bbfbc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1809,6 +1809,56 @@
                 }
             ],
             "time": "2021-12-04T23:24:31+00:00"
+        },
+        {
+            "name": "piphp/gpio",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PiPHP/GPIO.git",
+                "reference": "9288aa1b56c7ca85b182bbfb5225313ca7354093"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PiPHP/GPIO/zipball/9288aa1b56c7ca85b182bbfb5225313ca7354093",
+                "reference": "9288aa1b56c7ca85b182bbfb5225313ca7354093",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3||^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PiPHP\\GPIO\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Carter",
+                    "email": "andrewcarter1992@gmail.com"
+                }
+            ],
+            "description": "A library for accessing the GPIO pins on a Raspberry Pi",
+            "keywords": [
+                "GPIO",
+                "pi",
+                "pin",
+                "pins",
+                "raspberry"
+            ],
+            "support": {
+                "issues": "https://github.com/PiPHP/GPIO/issues",
+                "source": "https://github.com/PiPHP/GPIO/tree/master"
+            },
+            "time": "2020-08-24T13:50:12+00:00"
         },
         {
             "name": "psr/container",
