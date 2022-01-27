@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Gpio\ApiGpio;
+use App\Mail\FireMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Command;
 
 class CheckFlameStatus extends Command
@@ -49,6 +51,9 @@ class CheckFlameStatus extends Command
 
     protected function sendMessageToEmail()
     {
-        //TODO-send-email
+        Mail::send(new FireMail('Fire security!!!', [
+            'text' => 'fire safety violation'
+        ]));
+
     }
 }
