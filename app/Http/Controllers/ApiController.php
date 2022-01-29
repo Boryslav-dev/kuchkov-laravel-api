@@ -9,15 +9,20 @@ use GuzzleHttp\Exception\GuzzleException;
 use http\Env;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Psy\Util\Json;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use function GuzzleHttp\Promise\all;
 
 class ApiController extends Controller
 {
     private $openWeatherApi;
 
+    private $systemController;
+
     public function __construct()
     {
         $this->openWeatherApi = new OpenWeatherApiController();
+        $this->systemController = new SystemController();
     }
 
     /**
@@ -29,6 +34,20 @@ class ApiController extends Controller
         return $this->openWeatherApi->getWeatherParamsApi();
     }
 
+    public function getServerCpu()
+    {
+        return $this->systemController->getServerCpuUsage();
+    }
+
+    public function getServerMem(): string
+    {
+        return $this->systemController->getServerMemoryUsage();
+    }
+
+    public function getServerRam()
+    {
+        return json_encode($this->systemController->getServerRamUsage());
+    }
 
     public function getSensorsValueForDay(string $type): string
     {

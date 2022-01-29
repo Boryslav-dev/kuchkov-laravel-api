@@ -51,18 +51,6 @@ export default {
                 console.error("Fetching error");
             }
         },
-        async fetchHumidity() {
-            try {
-                const response = await fetch(`${BASE_API_URL}/api/getSensorsValueForDay/humidity`);
-                const humidityApiResponseObject = await response.json();
-                let params;
-                for (params of humidityApiResponseObject) {
-                    this.valueHumidityParams.push(params.value);
-                }
-            } catch (e) {
-                console.error("Fetching error");
-            }
-        },
     }
 }
 </script>
