@@ -16,6 +16,8 @@ class ApiGpio
 
     public function getTemperatureAndHumidityGpio(): array
     {
+        $pin = $this->gpio->getInputPin(13);
+        dd($pin);
         return ['temperature' => 34, 'humidity' => 70];
     }
 
