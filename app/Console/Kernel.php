@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\SetSensorsValues::class,
+        Commands\CheckFlameStatus::class,
+        Commands\RemoveAllDataFromDb::class,
     ];
 
     /**
@@ -24,7 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('set-sensors-values:set')->hourly();
+        $schedule->command('check-flame-status:read')->everyMinute();
+        $schedule->command('drop-sensors-table:drop')->daily();
     }
 
     /**
