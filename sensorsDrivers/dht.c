@@ -1,84 +1,141 @@
-#include "wiringPi.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "stdint.h"
-#define MAX_TIMINGS	85
-#define DHT_PIN		3	/* GPIO-22 */
-int data[5] = { 0, 0, 0, 0, 0 };
-void read_dht_data()
+//  How to access GPIO registers from C-code on the Raspberry-Pi
+//  Example program
+//  15-January-2012
+//  Dom and Gert
+//
+
+
+// Access from ARM Running Linux
+
+#define BCM2708_PERI_BASE        0x20000000
+#define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include <fcntl.h>
+#include <assert.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <bcm2835.h>
+#include <unistd.h>
+
+#define MAXTIMINGS 100
+
+#define DHT11 11
+#define DHT22 22
+#define AM2302 22
+
+int readDHT(int type, int pin);
+
+int main(int argc, char **argv)
 {
-	uint8_t laststate	= HIGH;
-	uint8_t counter		= 0;
-	uint8_t j			= 0, i;
-	data[0] = data[1] = data[2] = data[3] = data[4] = 0;
-	/* pull pin down for 18 milliseconds */
-	pinMode( DHT_PIN, OUTPUT );
-	digitalWrite( DHT_PIN, LOW );
-	delay( 18 );
-	/* prepare to read the pin */
-	pinMode( DHT_PIN, INPUT );
-	/* detect change and read data */
-	for ( i = 0; i < MAX_TIMINGS; i++ )
-	{
-		counter = 0;
-		while ( digitalRead( DHT_PIN ) == laststate )
-		{
-			counter++;
-			delayMicroseconds( 1 );
-			if ( counter == 255 )
-			{
-				break;
-			}
-		}
-		laststate = digitalRead( DHT_PIN );
-		if ( counter == 255 )
-			break;
-		/* ignore first 3 transitions */
-		if ( (i >= 4) && (i % 2 == 0) )
-		{
-			/* shove each bit into the storage bytes */
-			data[j / 8] <<= 1;
-			if ( counter > 16 )
-				data[j / 8] |= 1;
-			j++;
-		}
-	}
-	/*
-	 * check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
-	 * print it out if data is good
-	 */
-	if ( (j >= 40) &&
-	     (data[4] == ( (data[0] + data[1] + data[2] + data[3]) & 0xFF) ) )
-	{
-		float h = (float)((data[0] << 8) + data[1]) / 10;
-		if ( h > 100 )
-		{
-			h = data[0];	// for DHT11
-		}
-		float c = (float)(((data[2] & 0x7F) << 8) + data[3]) / 10;
-		if ( c > 125 )
-		{
-			c = data[2];	// for DHT11
-		}
-		if ( data[2] & 0x80 )
-		{
-			c = -c;
-		}
-		float f = c * 1.8f + 32;
-		printf( "Humidity = %.1f %% Temperature = %.1f *C (%.1f *F)\n", h, c, f );
-	}else  {
-		printf( "Data not good, skip\n" );
-	}
-}
-int main( void )
-{
-	printf( "Raspberry Pi DHT11/DHT22 temperature/humidity test\n" );
-	if ( wiringPiSetup() == -1 )
-		exit( 1 );
-	while ( 1 )
-	{
-		read_dht_data();
-		delay( 2000 ); /* wait 2 seconds before next read */
-	}
-	return(0);
+ if (!bcm2835_init())
+       return 1;
+
+ if (argc != 3) {
+       printf("usage: %s [11|22|2302] GPIOpin#\n", argv[0]);
+       printf("example: %s 2302 4 - Read from an AM2302 connected to GPIO #4\n", argv[0]);
+       return 2;
+ }
+ int type = 0;
+ if (strcmp(argv[1], "11") == 0) type = DHT11;
+ if (strcmp(argv[1], "22") == 0) type = DHT22;
+ if (strcmp(argv[1], "2302") == 0) type = AM2302;
+ if (type == 0) {
+       printf("Select 11, 22, 2303 as type!\n");
+       return 3;
+ }
+
+ int dhtpin = atoi(argv[2]);
+
+ if (dhtpin <= 0) {
+       printf("Please select a valid GPIO pin #\n");
+       return 3;
+ }
+
+
+ printf("Using pin #%d\n", dhtpin);
+
+readDHT(type, dhtpin);
+ return 0;
+
+} // main
+
+
+int bits[250], data[100];
+int bitidx = 0;
+
+int readDHT(int type, int pin) {
+ int counter = 0;
+ int laststate = HIGH;
+ int j=0;
+ int i=0;
+ // Set GPIO pin to output
+ bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_OUTP);
+ bcm2835_gpio_write(pin, HIGH);
+ usleep(100);
+ bcm2835_gpio_write(pin, LOW);
+ usleep(20000);
+ bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_INPT);
+
+ data[0] = data[1] = data[2] = data[3] = data[4] = 0;
+ // read data!
+
+ for (i=0; i< MAXTIMINGS; i++) {
+    counter = 0;
+    while ( bcm2835_gpio_lev(pin) == laststate) {
+       counter++;
+       sleep(1);           // overclocking might change this?
+       if (counter == 100)
+         break;
+    }
+    laststate = bcm2835_gpio_lev(pin);
+    if (counter == 100) break;
+    bits[bitidx++] = counter;
+
+    if ((i>3) && (i%2 == 0)) {
+     // shove each bit into the storage bytes
+     data[j/8] <<= 1;
+     if (counter > 16)
+       data[j/8] |= 1;
+     j++;
+    }
+ }
+
+
+#ifdef DEBUG
+ for (int i=3; i<bitidx; i+=2) {
+    printf("bit %d: %d\n", i-3, bits[i]);
+    printf("bit %d: %d (%d)\n", i-2, bits[i+1], bits[i+1] > 15);
+ }
+#endif
+
+ printf("Data (%d): 0x%x 0x%x 0x%x 0x%x 0x%x\n", j, data[0], data[1], data[2], data[3], data[4]);
+
+ if ((j >= 39) &&
+     (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF)) ) {
+    // yay!
+    if (type == DHT11)
+
+printf("Temp = %d *C, Hum = %d \%\n", data[2], data[0]);
+    if (type == DHT22) {
+ float f, h;
+       h = data[0] * 256 + data[1];
+       printf ("%s\n",h);
+       h /= 10;
+
+       f = (data[2] & 0x7F)* 256 + data[3];
+       f /= 10.0;
+       if (data[2] & 0x80)  f *= -1;
+       printf("Temp =  %.1f *C, Hum = %.1f \%\n", f, h);
+    }
+    return 1;
+ }
+
+ return 0;
 }
