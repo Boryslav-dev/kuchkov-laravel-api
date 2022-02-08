@@ -16,7 +16,7 @@ class ApiGpio
 
     public function getTemperatureAndHumidityGpio(): array
     {
-        exec('../../../../../sensorsDrivers/examples/AdafruitDHT.py 11 13', $dht);
+        exec(__DIR__ . 'sensorsDrivers/examples/AdafruitDHT.py 11 13', $dht);
         dd($dht);
         return ['temperature' => 34, 'humidity' => 70];
     }
