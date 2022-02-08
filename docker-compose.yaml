@@ -30,16 +30,16 @@ services:
       PHP_IDE_CONFIG: "serverName=SmartHouse"
 
   db:
-    image: mysql:8
+    image: webhippie/mariadb
     ports:
-      - 3307:3306
+      - 3306:3306
     networks:
       - code-network
     environment:
-      MYSQL_ROOT_PASSWORD: lrv7
-      MYSQL_PASSWORD: lrv7
-      MYSQL_DATABASE: lrv7
-      MYSQL_USER: lrv7
+      MARIADB_ROOT_PASSWORD: lrv7
+      MARIADB_PASSWORD: lrv7
+      MARIADB_DATABASE: lrv7
+      MARIADB_USERNAME: lrv7
 
 networks:
   code-network:
