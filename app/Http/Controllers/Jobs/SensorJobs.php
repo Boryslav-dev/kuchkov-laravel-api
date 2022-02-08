@@ -20,7 +20,7 @@ class SensorJobs
         $sensor = new Sensor();
 
         $sensor->type = 'temperature';
-        $sensor->value = $this->apiGpio->getTemperatureAndHumidityGpio()['temperature'];
+        $sensor->value = (int)$this->apiGpio->getTemperatureAndHumidityGpio()['0'];
         $sensor->save();
     }
 
@@ -29,7 +29,7 @@ class SensorJobs
         $sensor = new Sensor();
 
         $sensor->type = 'humidity';
-        $sensor->value = $this->apiGpio->getTemperatureAndHumidityGpio()['humidity'];
+        $sensor->value = (int)$this->apiGpio->getTemperatureAndHumidityGpio()['1'];
         $sensor->save();
     }
 
