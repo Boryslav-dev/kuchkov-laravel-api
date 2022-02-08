@@ -8,11 +8,23 @@ import { Line } from 'vue-chartjs'
 export default {
     name: "FireSafetyChart",
     extends: Line,
+    props: {
+        chartdataSmoke: {
+            type: Object,
+            default: null
+        },
+        chartdataFlame: {
+            type: Object,
+            default: null
+        },
+        options: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
             dataParams: [],
-            valueFireParams: [],
-            valueSmokeParams: [],
         };
     },
     created() {
@@ -20,27 +32,19 @@ export default {
             if (i < 10) {this.dataParams.push('0'+i+':00');}
             else {this.dataParams.push(i+':00');}
         }
-        for (let i=0; i <= 24; i++) {
-            let j = i;
-            this.valueFireParams.push(i^2*j^2*12-(j^j+i));
-        }
-        for (let i=0; i <= 24; i++) {
-            let j = i;
-            this.valueSmokeParams.push(i^2*j^2*4-(j^j+i));
-        }
     },
-    mounted () {
+    mounted() {
         this.renderChart({
             labels: this.dataParams,
             datasets: [
                 {
                     label: 'Smoke',
-                    data: this.valueSmokeParams,
+                    data: this.chartdataSmoke,
                 },
                 {
                     label: 'Fire',
                     backgroundColor: 'rgba(255,0,0,0.7)',
-                    data: this.valueFireParams,
+                    data: this.chartdataFlame,
                 }
             ]
         }, {responsive: true, maintainAspectRatio: false})

@@ -8,10 +8,19 @@ import { Line } from 'vue-chartjs'
 export default {
     name: "TemperatureChart",
     extends: Line,
+    props: {
+        chartdata: {
+            type: Object,
+            default: null
+        },
+        options: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
             dataParams: [],
-            valueTemperatureParams: [],
         };
     },
     created() {
@@ -19,19 +28,15 @@ export default {
             if (i < 10) {this.dataParams.push('0'+i+':00');}
             else {this.dataParams.push(i+':00');}
         }
-        for (let i=0; i <= 24; i++) {
-            let j = i;
-            this.valueTemperatureParams.push(i^2*j^2*12-(j^j+i));
-        }
     },
-    mounted () {
+    mounted() {
         this.renderChart({
             labels: this.dataParams,
             datasets: [
                 {
                     label: 'Temperature',
                     backgroundColor: 'rgba(178, 34, 34, 0.7)',
-                    data: this.valueTemperatureParams,
+                    data: this.chartdata,
                 }
             ]
         }, {responsive: true, maintainAspectRatio: false})
