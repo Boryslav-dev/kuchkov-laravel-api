@@ -16,21 +16,23 @@ class ApiGpio
 
     public function getTemperatureAndHumidityGpio(): array
     {
-//        exec('sensorsDrivers/examples/AdafruitDHT.py 11 13', $dht);
-//
-//        return explode(" ", $dht[0]);
+        exec('sensorsDrivers/examples/AdafruitDHT.py 11 13', $dht);
 
-        return ['29.0', '55.0'];
+        return explode(" ", $dht[0]);
     }
 
     public function getSmokeRateGpio()
     {
-        return 45;
+        $pin = $this->gpio->getInputPin(19);
+
+        return (int)$pin;
     }
 
-    public function getFlameRateGpio()
+    public function getFlameRateGpio(): int
     {
-        return 10;
+        $pin = $this->gpio->getInputPin(26);
+
+        return (int)$pin;
     }
 
     public function setLedStatus()

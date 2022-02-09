@@ -40,7 +40,7 @@ class CheckFlameStatus extends Command
      */
     public function handle(ApiGpio $apiGpio)
     {
-        if($apiGpio->getFlameRateGpio() < 10 && $apiGpio->getSmokeRateGpio() < 5) {
+        if($apiGpio->getFlameRateGpio() && $apiGpio->getSmokeRateGpio()) {
             return true;
         } else {
             $this->sendMessageToEmail();
@@ -51,9 +51,6 @@ class CheckFlameStatus extends Command
 
     protected function sendMessageToEmail()
     {
-        Mail::send(new FireMail('Fire security!!!', [
-            'text' => 'fire safety violation'
-        ]));
-
+        Mail::to(env("MAIL_FROM_ADDRESS"))->send(new FireMail('Fire Safety', ['text' => 'Flame rate are high!']));
     }
 }

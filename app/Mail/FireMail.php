@@ -40,8 +40,7 @@ class FireMail extends Mailable
      */
     public function build(): FireMail
     {
-        return $this->to(env("MAIL_TO_ADDRESS"))
-            ->from(env("MAIL_FROM_ADDRESS"))
+        return $this->from(env("MAIL_FROM_ADDRESS"))
             ->subject($this->subject)
             ->text('emails');
     }
