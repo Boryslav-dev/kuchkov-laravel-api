@@ -39,8 +39,29 @@ class ApiController extends Controller
         return $this->openWeatherApi->getWeatherParamsApi();
     }
 
+    public function getLedStatus(): string
+    {
+        return (string)$this->apiGpio->getLedStatus();
+    }
+
+    public function setLedStatus(): string
+    {
+        return (string)$this->apiGpio->setLedStatus();
+    }
+
+    public function getSmokeDangerStatusApi(): string
+    {
+        return (string)$this->apiGpio->getSmokeRateGpio();
+    }
+
+    public function getFlameDangerStatusApi(): string
+    {
+        return (string)$this->apiGpio->getFlameRateGpio();
+    }
+
     public function getTemperatureApi(): string
     {
+        dd($this->apiGpio->getTemperatureAndHumidityGpio()[0]);
         return $this->apiGpio->getTemperatureAndHumidityGpio()[0];
     }
 

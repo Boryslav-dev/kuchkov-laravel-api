@@ -21,7 +21,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/getWeatherParams', 'ApiController@getWeatherParams');
 Route::get('/getTemperatureApi', 'ApiController@getTemperatureApi');
+Route::get('/getLedStatus', 'ApiController@getLedStatus');
+Route::get('/setLedStatus', 'ApiController@setLedStatus');
 Route::get('/getHumidityApi', 'ApiController@getHumidityApi');
+Route::get('/getSmokeDangerStatusApi', 'ApiController@getSmokeDangerStatusApi');
+Route::get('/getFlameDangerStatusApi', 'ApiController@getFlameDangerStatusApi');
 Route::get('/getServerCpu', 'ApiController@getServerCpu');
 Route::get('/getServerMem', 'ApiController@getServerMem');
 Route::get('/getServerRam', 'ApiController@getServerRam');

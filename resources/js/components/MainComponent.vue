@@ -10,7 +10,10 @@
                 :temperatureOutdoorValue="temperatureOutdoorValue"
                 :humidityOutdoorValue="humidityOutdoorValue"
                 :temperatureValue="temperatureValue"
-                :humidityValue="humidityValue">
+                :humidityValue="humidityValue"
+                :smokeDangerStatus="smokeDangerStatus"
+                :flameDangerStatus="flameDangerStatus"
+                :lightSwitch="lightSwitch">
             </monitor-component>
         </div>
     </div>
@@ -28,11 +31,15 @@ export default {
         weatherApiResponseObject: Object,
         temperatureValueApi: String,
         humidityValueApi: String,
+        smokeDangerStatusApi: Boolean,
+        flameDangerStatusApi: Boolean,
+        lightSwitchApi: Boolean,
     },
     created() {
         this.fetchWeather();
         this.fetchTemperature();
         this.fetchHumidity();
+        this.fetchLight();
     },
     computed: {
         username() {
@@ -44,12 +51,21 @@ export default {
         humidityValue() {
             return this.humidityValueApi;
         },
+        smokeDangerStatus() {
+            return this.smokeDangerStatusApi;
+        },
+        flameDangerStatus() {
+            return this.flameDangerStatusApi;
+        },
         temperatureOutdoorValue() {
             return parseInt(this.weatherApiResponseObject.main.temp)-273;
         },
         humidityOutdoorValue() {
             return this.weatherApiResponseObject.main.humidity;
         },
+        lightSwitch() {
+            return this.lightSwitchApi;
+        }
     },
     methods: {
         goBack() {
@@ -60,7 +76,7 @@ export default {
                 const response = await fetch(`${BASE_API_URL}/api/getWeatherParams`);
                 this.weatherApiResponseObject = await response.json();
             } catch (e) {
-                console.error("Fetching error");
+                console.error("Fetching Weather error");
             }
         },
         async fetchTemperature() {
@@ -68,7 +84,7 @@ export default {
                 const response = await fetch(`${BASE_API_URL}/api/getTemperatureApi`);
                 this.temperatureValueApi = await response.json();
             } catch (e) {
-                console.error("Fetching error");
+                console.error("Fetching Temperature error");
             }
         },
         async fetchHumidity() {
@@ -76,7 +92,31 @@ export default {
                 const response = await fetch(`${BASE_API_URL}/api/getHumidityApi`);
                 this.humidityValueApi = await response.json();
             } catch (e) {
-                console.error("Fetching error");
+                console.error("Fetching Humidity error");
+            }
+        },
+        async fetchSmokeDangerStatus() {
+            try {
+                const response = await fetch(`${BASE_API_URL}/api/getSmokeDangerStatusApi`);
+                this.smokeDangerStatusApi = await response.json();
+            } catch (e) {
+                console.error("Fetching SmokeDangerStatus error");
+            }
+        },
+        async fetchFlameDangerStatus() {
+            try {
+                const response = await fetch(`${BASE_API_URL}/api/getFlameDangerStatusApi`);
+                this.flameDangerStatusApi = await response.json();
+            } catch (e) {
+                console.error("Fetching FlameDangerStatus error");
+            }
+        },
+        async fetchLight() {
+            try {
+                const response = await fetch(`${BASE_API_URL}/api/getLedStatus`);
+                this.lightSwitchApi = await response.json();
+            } catch (e) {
+                console.error("Fetching Light error");
             }
         },
     }

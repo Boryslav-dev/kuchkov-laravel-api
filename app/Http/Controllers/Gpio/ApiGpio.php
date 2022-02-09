@@ -21,7 +21,7 @@ class ApiGpio
         return explode(" ", $dht[0]);
     }
 
-    public function getSmokeRateGpio()
+    public function getSmokeRateGpio(): int
     {
         $pin = $this->gpio->getInputPin(19);
 
@@ -35,8 +35,25 @@ class ApiGpio
         return (int)$pin;
     }
 
-    public function setLedStatus()
+    public function getLedStatus(): int
     {
-        //TODO-setLedStatus
+        $pin = $this->gpio->getOutputPin(18);
+
+        return $pin->getValue();
+    }
+
+    public function setLedStatus(): int
+    {
+        $pin = $this->gpio->getOutputPin(18);
+
+        if ($pin->getValue()) {
+           $pin->setValue(0);
+
+           return 0;
+        } else if (!$pin->getValue()) {
+            $pin->setValue(1);
+
+            return 1;
+        }
     }
 }

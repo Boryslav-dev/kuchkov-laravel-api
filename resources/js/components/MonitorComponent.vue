@@ -46,7 +46,7 @@
                             <p class="card-text h4 text-danger" v-else>Smoke rate: {{ smokeRate }}</p>
                             <p class="card-text h4" v-if="flameDangerStatus === false">Flame rate: {{ flameRate }}</p>
                             <p class="card-text h4 text-danger" v-else>Flame rate: {{ flameRate }}</p>
-                            <h1 class="card-text" v-if="dangerZoneStatus === false">Fire Safety</h1>
+                            <h1 class="card-text" v-if="dangerStatus === false">Fire Safety</h1>
                             <h1 class="card-text text-danger" v-else>Fire Safety</h1>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
             </router-link>
             <div class="col mb-3"
                  @click="changeLight">
-                <div class="hovereffect hovereffectLight card bg-dark text-white" v-if="lightSwitch === 'on'">
+                <div class="hovereffect hovereffectLight card bg-dark text-white" v-if="lightSwitch">
                     <img class="img-responsive" src="../../../public/images/images/img.png" alt="">
                     <div class="overlay">
                         <p class="card-title mt-5">Light</p>
@@ -77,12 +77,6 @@
                         <img class="img-responsive" src="../../../public/images/images/img.png" alt="">
                         <div class="overlay">
                             <p class="card-title mt-5">System:</p>
-                            <p class="card-text">in house:
-                                <span class="card-text h4"> {{ temperature }} &#176;C</span>
-                            </p>
-                            <p class="card-text">outdoor:
-                                <span class="card-text h4"> {{ temperatureOutdoorValue }} &#176;C</span>
-                            </p>
                             <h1 class="card-text">System</h1>
                         </div>
                     </div>
@@ -110,6 +104,8 @@
 </template>
 
 <script>
+import {BASE_API_URL} from "./Constants/serverValues";
+
 export default {
     name: "MonitorComponent",
     props: {
@@ -117,20 +113,24 @@ export default {
         humidityOutdoorValue: String,
         temperatureValue: String,
         humidityValue: String,
+        smokeDangerStatus: Boolean,
+        flameDangerStatus: Boolean,
+        lightSwitch: Boolean,
     },
     data() {
         return {
-            lightSwitch: 'on',
-            smokeDangerMessage: 'normal',
-            flameDangerMessage: 'Gorim!!!!',
-            smokeDangerStatus: false,
-            flameDangerStatus: true,
-            dangerZoneStatus: true,
+            lightSwitchMassageOn: 'on',
+            lightSwitchMassageOff: 'off',
+            smokeNormalMessage: 'Smoke normal',
+            flameNormalMessage: 'Flame normal',
+            smokeDangerMessage: 'Smoke high',
+            flameDangerMessage: 'Flame high',
         };
     },
     computed: {
         light() {
-            return this.lightSwitch;
+            if (this.lightSwitch) return this.lightSwitchMassageOn;
+            return this.lightSwitchMassageOff;
         },
         temperature() {
             return this.temperatureValue;
@@ -138,22 +138,28 @@ export default {
         humidity() {
             return this.humidityValue;
         },
-        luminosity() {
-            return this.luminosityValue;
+        dangerStatus() {
+            return this.flameDangerStatus || this.smokeDangerStatus;
         },
         smokeRate() {
-            return this.smokeDangerMessage;
+            if (this.smokeDangerStatus) return this.smokeDangerMessage;
+            if (!this.smokeDangerStatus) return this.smokeNormalMessage;
         },
         flameRate() {
-            return this.flameDangerMessage;
+            if (this.flameDangerStatus) return this.flameDangerMessage;
+            if (!this.flameDangerStatus) return this.flameNormalMessage;
         },
     },
     methods: {
         changeLight() {
-            if (this.lightSwitch === 'on') {
-                return this.lightSwitch = 'off';
-            } else {
-                return this.lightSwitch = 'on';
+            this.fetchLight();
+        },
+        async fetchLight() {
+            try {
+                const response = await fetch(`${BASE_API_URL}/api/setLedStatus`);
+                this.lightSwitch = await response.json();
+            } catch (e) {
+                console.error("Fetching Switch Light error");
             }
         },
     },
