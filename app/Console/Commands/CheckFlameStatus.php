@@ -40,10 +40,10 @@ class CheckFlameStatus extends Command
      */
     public function handle(ApiGpio $apiGpio)
     {
-        if($apiGpio->getFlameRateGpio() && $apiGpio->getSmokeRateGpio()) {
-            return true;
-        } else {
+        if(!$apiGpio->getFlameRateGpio() || !$apiGpio->getSmokeRateGpio()) {
             $this->sendMessageToEmail();
+        } else {
+            return true;
         }
 
         return true;

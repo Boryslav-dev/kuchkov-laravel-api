@@ -61,13 +61,12 @@ class ApiController extends Controller
 
     public function getTemperatureApi(): string
     {
-        dd($this->apiGpio->getTemperatureAndHumidityGpio()[0]);
-        return $this->apiGpio->getTemperatureAndHumidityGpio()[0];
+        return (string)$this->apiGpio->getTemperatureAndHumidityGpioApi()['0'];
     }
 
     public function getHumidityApi(): string
     {
-        return $this->apiGpio->getTemperatureAndHumidityGpio()[1];
+        return (string)$this->apiGpio->getTemperatureAndHumidityGpioApi()['1'];
     }
 
     public function getServerCpu()
