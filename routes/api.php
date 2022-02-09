@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/getWeatherParams', 'ApiController@getWeatherParams');
+Route::get('/getTemperatureApi', 'ApiController@getTemperatureApi');
+Route::get('/getHumidityApi', 'ApiController@getHumidityApi');
 Route::get('/getServerCpu', 'ApiController@getServerCpu');
 Route::get('/getServerMem', 'ApiController@getServerMem');
 Route::get('/getServerRam', 'ApiController@getServerRam');

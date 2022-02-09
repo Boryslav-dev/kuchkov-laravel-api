@@ -16,9 +16,11 @@ class ApiGpio
 
     public function getTemperatureAndHumidityGpio(): array
     {
-        exec('sensorsDrivers/examples/AdafruitDHT.py 11 13', $dht);
+//        exec('sensorsDrivers/examples/AdafruitDHT.py 11 13', $dht);
+//
+//        return explode(" ", $dht[0]);
 
-        return explode(" ", $dht[0]);
+        return ['29.0', '55.0'];
     }
 
     public function getSmokeRateGpio()

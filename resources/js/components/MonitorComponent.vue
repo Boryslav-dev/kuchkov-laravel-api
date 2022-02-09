@@ -115,13 +115,12 @@ export default {
     props: {
         temperatureOutdoorValue: String,
         humidityOutdoorValue: String,
+        temperatureValue: String,
+        humidityValue: String,
     },
     data() {
         return {
             lightSwitch: 'on',
-            temperatureValue: '25',
-            humidityValue: '70',
-            luminosityValue: '60',
             smokeDangerMessage: 'normal',
             flameDangerMessage: 'Gorim!!!!',
             smokeDangerStatus: false,

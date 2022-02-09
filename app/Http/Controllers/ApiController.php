@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Gpio\ApiGpio;
 use App\Http\Controllers\Integrations\OpenWeatherApiController;
 use App\Sensor;
 use GuzzleHttp\Client;
@@ -9,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use http\Env;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PiPHP\GPIO\GPIO;
 use Psy\Util\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use function GuzzleHttp\Promise\all;
@@ -19,10 +21,13 @@ class ApiController extends Controller
 
     private $systemController;
 
+    private $apiGpio;
+
     public function __construct()
     {
         $this->openWeatherApi = new OpenWeatherApiController();
         $this->systemController = new SystemController();
+        $this->apiGpio = new ApiGpio();
     }
 
     /**
@@ -32,6 +37,16 @@ class ApiController extends Controller
     public function getWeatherParams(): \Psr\Http\Message\StreamInterface
     {
         return $this->openWeatherApi->getWeatherParamsApi();
+    }
+
+    public function getTemperatureApi(): string
+    {
+        return $this->apiGpio->getTemperatureAndHumidityGpio()[0];
+    }
+
+    public function getHumidityApi(): string
+    {
+        return $this->apiGpio->getTemperatureAndHumidityGpio()[1];
     }
 
     public function getServerCpu()
